@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CampusPlace – College Placement Management</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#f2f4f8;--card:#fff;--ink:#14213d;--mut:#667089;--line:#dfe3ec;--acc:#e07a00;--accbg:#fff1dd;--ok:#1f8a4c;--okbg:#def5e8;--warn:#a86400;--warnbg:#fff0d4;--bad:#c4283a;--badbg:#fde4e7;--bar:#14213d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1320;--card:#161d2e;--ink:#e9edf7;--mut:#99a3bb;--line:#273049;--acc:#ffa133;--accbg:#3a2a12;--ok:#52cc84;--okbg:#17382a;--warn:#f0b04a;--warnbg:#3a2d12;--bad:#ff7686;--badbg:#3d1a20;--bar:#ffa133;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1320;--card:#161d2e;--ink:#e9edf7;--mut:#99a3bb;--line:#273049;--acc:#ffa133;--accbg:#3a2a12;--ok:#52cc84;--okbg:#17382a;--warn:#f0b04a;--warnbg:#3a2d12;--bad:#ff7686;--badbg:#3d1a20;--bar:#ffa133;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 4px;flex-wrap:wrap}
+.top h1{font-size:20px;margin:0;letter-spacing:-.01em}
+.top small{color:var(--mut)}
+nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px}
+nav button{background:none;border:0;color:var(--mut);font:inherit;font-weight:500;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--ink);color:var(--card)}
+main{padding:18px 0 40px}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:16px;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.stat{margin:0}.stat span{color:var(--mut);font-size:13px;display:block}.stat b{font-size:30px;letter-spacing:-.02em}
+.stat.hero{background:var(--ink);color:var(--card);border-color:var(--ink)}.stat.hero span{color:inherit;opacity:.75}.stat.hero b{color:var(--acc);font-size:40px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.bar{display:grid;grid-template-columns:56px 1fr 96px;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.track{height:12px;background:var(--bg);border-radius:6px;overflow:hidden}.track i{display:block;height:100%;background:var(--bar);border-radius:6px}
+.bar em{font-style:normal;color:var(--mut);text-align:right;font-size:13px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+label{display:grid;gap:4px;font-size:13px;color:var(--mut)}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.chk{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:14px}
+.chk label{display:flex;align-items:center;gap:6px;color:var(--ink)}.chk input{width:auto}
+.btn{font:inherit;font-weight:500;background:var(--acc);color:#1b1200;border:0;border-radius:8px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+.btn.del{background:none;color:var(--bad);padding:6px 10px;border:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.add{margin-top:12px;justify-content:flex-start;align-items:center}.add select{max-width:300px}
+.mut{color:var(--mut);font-size:14px}
+.scroll{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;color:var(--mut);font-weight:500;font-size:13px}th,td{padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12.5px;font-weight:500;background:var(--bg);color:var(--mut)}
+.tag.ok{background:var(--okbg);color:var(--ok)}.tag.warn{background:var(--warnbg);color:var(--warn)}.tag.bad{background:var(--badbg);color:var(--bad)}
+td select{width:auto;padding:5px 8px}
+.list p{margin:0;padding:8px 0;border-bottom:1px solid var(--line)}.list p:last-child{border:0}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--card);padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9;max-width:90%}
+#toast.on{opacity:1}
+footer{color:var(--mut);font-size:13px;text-align:center;padding:0 16px 24px}footer button{background:none;border:0;color:var(--acc);font:inherit;cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="top"><h1>CampusPlace <small>Training &amp; Placement Cell</small></h1></div>
+  <nav id="nav"></nav>
+</div></header>
+<div class="wrap"><main id="main"></main></div>
+<footer>Data is saved in this browser only. <button onclick="reset()">Reset demo data</button></footer>
+<div id="toast"></div>
+<script>
+const DEPTS=['CSE','IT','ECE','EEE','MECH','CIVIL'],STAT=['Applied','Shortlisted','Selected','Rejected'];
+const $=s=>document.querySelector(s),esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dt=n=>new Date(Date.now()+n*864e5).toISOString().slice(0,10);
+function seed(){return{n:100,
+students:[[1,'Aarav Reddy','21CS001','CSE',8.9],[2,'Priya Sharma','21CS014','CSE',9.2],[3,'Rohan Verma','21EC007','ECE',7.8],[4,'Sneha Iyer','21IT003','IT',8.4],[5,'Karthik Naidu','21ME011','MECH',7.1],[6,'Divya Rao','21EE005','EEE',8.0],[7,'Imran Khan','21CV002','CIVIL',6.9],[8,'Ananya Das','21EC019','ECE',8.7]].map(([id,name,roll,dept,cgpa])=>({id,name,roll,dept,cgpa})),
+companies:[[1,'TechNova Solutions','IT Services','Hyderabad'],[2,'Infracore Engineering','Core / Construction','Pune'],[3,'VoltEdge Systems','Electronics','Bengaluru'],[4,'DataWave Analytics','Analytics','Chennai']].map(([id,name,sector,loc])=>({id,name,sector,loc})),
+drives:[[1,1,'Software Engineer',7.5,-12,7.5,['CSE','IT','ECE']],[2,2,'Site Engineer',4.5,6,6.5,['MECH','CIVIL']],[3,3,'Embedded Engineer',6,10,7.5,['ECE','EEE']],[4,4,'Data Analyst',9,-5,8,['CSE','IT','ECE']]].map(([id,c,role,pkg,d,min,depts])=>({id,c,role,pkg,date:dt(d),min,depts})),
+apps:[[1,1,1,'Selected'],[2,1,2,'Shortlisted'],[3,1,4,'Applied'],[4,4,2,'Selected'],[5,3,3,'Shortlisted'],[6,3,8,'Selected'],[7,2,5,'Applied']].map(([id,d,s,st])=>({id,d,s,st}))}}
+let S=(()=>{try{const r=localStorage.getItem('campusplace');if(r)return JSON.parse(r)}catch(e){}return seed()})(),tab='dash',q='';
+const save=()=>{try{localStorage.setItem('campusplace',JSON.stringify(S))}catch(e){}};
+const co=id=>S.companies.find(c=>c.id==id),st=id=>S.students.find(s=>s.id==id),dr=id=>S.drives.find(d=>d.id==id);
+const eligible=(d,s)=>s.cgpa>=d.min&&d.depts.includes(s.dept);
+function placed(sid){const x=S.apps.filter(a=>a.s==sid&&a.st=='Selected').map(a=>dr(a.d)).filter(Boolean);return x.length?x.reduce((m,d)=>d.pkg>m.pkg?d:m):null}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2400)}
+const tabs=[['dash','Dashboard'],['stu','Students'],['com','Companies'],['dri','Drives']];
+function go(k){tab=k;q='';render()}
+function render(){
+  $('#nav').innerHTML=tabs.map(([k,l])=>`<button class="${k==tab?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
+  $('#main').innerHTML=({dash,stu,com,dri})[tab]();list();window.scrollTo(0,0);
+}
+function list(){const f={stu:stList,com:coList,dri:drList}[tab];if(f)$('#L').innerHTML=f()}
+function change(){save();list();if(tab=='dash')render()}
+
+/* Dashboard */
+function dash(){
+  const P=S.students.filter(s=>placed(s.id)),pk=P.map(s=>placed(s.id).pkg),T=S.students.length;
+  const hi=pk.length?Math.max(...pk):0,av=pk.length?pk.reduce((a,b)=>a+b)/pk.length:0,pc=T?Math.round(P.length/T*100):0;
+  const stat=(l,v,c='')=>`<div class="card stat ${c}"><span>${l}</span><b>${v}</b></div>`;
+  const bars=DEPTS.map(d=>{const t=S.students.filter(s=>s.dept==d),p=t.filter(s=>placed(s.id)).length,x=t.length?Math.round(p/t.length*100):0;
+    return `<div class="bar"><span>${d}</span><div class="track"><i style="width:${x}%"></i></div><em>${p}/${t.length} · ${x}%</em></div>`}).join('');
+  const up=[...S.drives].filter(d=>d.date>=dt(0)).sort((a,b)=>a.date<b.date?-1:1).map(d=>`<p><b>${esc(co(d.c)?.name||'?')}</b> — ${esc(d.role)}<br><span class="mut">${d.date} · ₹${d.pkg} LPA</span></p>`).join('')||'<p class="mut">No upcoming drives. Schedule one in Drives.</p>';
+  const pl=P.sort((a,b)=>placed(b.id).pkg-placed(a.id).pkg).map(s=>{const d=placed(s.id);return `<p><b>${esc(s.name)}</b> <span class="mut">${s.dept}</span><br><span class="mut">${esc(co(d.c)?.name||'?')} · ₹${d.pkg} LPA</span></p>`}).join('')||'<p class="mut">No selections yet. Mark applicants as Selected in Drives.</p>';
+  return `<div class="grid">${stat('Placement rate',pc+'%','hero')}${stat('Students',T)}${stat('Placed',P.length)}${stat('Highest package','₹'+hi+' LPA')}${stat('Average package','₹'+av.toFixed(1)+' LPA')}</div>
+  <div class="card"><h2>Placement by department</h2>${bars}</div>
+  <div class="two"><div class="card list"><h2>Upcoming drives</h2>${up}</div><div class="card list"><h2>Placed students</h2>${pl}</div></div>`;
+}
+
+/* Students */
+function stu(){return `<div class="card"><h2>Add student</h2><div class="form">
+  <label>Name<input id="sn"></label><label>Roll number<input id="sr"></label>
+  <label>Department<select id="sd">${DEPTS.map(d=>`<option>${d}</option>`).join('')}</select></label>
+  <label>CGPA<input id="sc" type="number" min="0" max="10" step="0.1"></label><button class="btn" onclick="addStu()">Add student</button></div></div>
+  <div class="card"><div class="row"><h2>All students</h2><input id="sq" placeholder="Search name, roll or department" style="max-width:280px" oninput="q=this.value;list()"></div><div id="L"></div></div>`}
+function stList(){
+  const k=q.toLowerCase(),rows=S.students.filter(s=>(s.name+s.roll+s.dept).toLowerCase().includes(k));
+  if(!rows.length)return '<p class="mut">No students match. Add one above.</p>';
+  return `<div class="scroll"><table><tr><th>Name</th><th>Roll no.</th><th>Dept</th><th>CGPA</th><th>Status</th><th></th></tr>${rows.map(s=>{const p=placed(s.id);
+  return `<tr><td>${esc(s.name)}</td><td>${esc(s.roll)}</td><td>${s.dept}</td><td>${s.cgpa}</td><td>${p?`<span class="tag ok">Placed · ${esc(co(p.c)?.name||'')} · ₹${p.pkg} LPA</span>`:'<span class="tag">Unplaced</span>'}</td><td><button class="btn del" onclick="delStu(${s.id})">Remove</button></td></tr>`}).join('')}</table></div>`}
+function addStu(){
+  const name=$('#sn').value.trim(),roll=$('#sr').value.trim(),cgpa=parseFloat($('#sc').value);
+  if(!name||!roll||!(cgpa>=0&&cgpa<=10))return toast('Enter a name, roll number and CGPA between 0 and 10.');
+  if(S.students.some(s=>s.roll.toLowerCase()==roll.toLowerCase()))return toast('That roll number already exists.');
+  S.students.push({id:S.n++,name,roll,dept:$('#sd').value,cgpa});save();['#sn','#sr','#sc'].forEach(i=>$(i).value='');list();toast('Student added.')}
+function delStu(id){S.students=S.students.filter(s=>s.id!=id);S.apps=S.apps.filter(a=>a.s!=id);save();list();toast('Student removed.')}
+
+/* Companies */
+function com(){return `<div class="card"><h2>Add company</h2><div class="form"><label>Company name<input id="cn"></label><label>Sector<input id="cs"></label><label>Location<input id="cl"></label><button class="btn" onclick="addCo()">Add company</button></div></div><div id="L"></div>`}
+function coList(){
+  if(!S.companies.length)return '<p class="mut">No companies yet. Add the first recruiter above.</p>';
+  return S.companies.map(c=>{const ds=S.drives.filter(d=>d.c==c.id),sel=S.apps.filter(a=>a.st=='Selected'&&ds.some(d=>d.id==a.d)).length;
+  return `<div class="card"><div class="row"><div><h3>${esc(c.name)}</h3><div class="mut">${esc(c.sector||'—')} · ${esc(c.loc||'—')}</div><div class="mut">${ds.length} drive${ds.length==1?'':'s'} · ${sel} student${sel==1?'':'s'} selected</div></div><button class="btn del" onclick="delCo(${c.id})">Remove</button></div></div>`}).join('')}
+function addCo(){const name=$('#cn').value.trim();if(!name)return toast('Enter the company name.');
+  S.companies.push({id:S.n++,name,sector:$('#cs').value.trim(),loc:$('#cl').value.trim()});save();['#cn','#cs','#cl'].forEach(i=>$(i).value='');list();toast('Company added.')}
+function delCo(id){const ids=S.drives.filter(d=>d.c==id).map(d=>d.id);S.companies=S.companies.filter(c=>c.id!=id);S.drives=S.drives.filter(d=>d.c!=id);S.apps=S.apps.filter(a=>!ids.includes(a.d));save();list();toast('Company and its drives removed.')}
+
+/* Drives */
+function dri(){
+  if(!S.companies.length)return '<div class="card"><p class="mut">Add a company first, then schedule its drive.</p></div><div id="L"></div>';
+  return `<div class="card"><h2>Schedule drive</h2><div class="form">
+  <label>Company<select id="dc">${S.companies.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></label>
+  <label>Role<input id="dro"></label><label>Package (LPA)<input id="dp" type="number" min="0" step="0.1"></label>
+  <label>Drive date<input id="dd" type="date" value="${dt(7)}"></label><label>Minimum CGPA<input id="dm" type="number" min="0" max="10" step="0.1" value="6"></label>
+  <button class="btn" onclick="addDrive()">Schedule drive</button></div>
+  <div class="chk" id="dx">${DEPTS.map(d=>`<label><input type="checkbox" value="${d}" checked>${d}</label>`).join('')}</div></div><div id="L"></div>`}
+function drList(){
+  if(!S.drives.length)return '<p class="mut">No drives scheduled yet.</p>';
+  return [...S.drives].sort((a,b)=>a.date<b.date?-1:1).map(d=>{
+    const c=co(d.c),el=S.students.filter(s=>eligible(d,s)),aps=S.apps.filter(a=>a.d==d.id),free=el.filter(s=>!aps.some(a=>a.s==s.id));
+    const tc=x=>x=='Selected'?'ok':x=='Rejected'?'bad':x=='Shortlisted'?'warn':'';
+    return `<div class="card"><div class="row"><div><h3>${esc(c?c.name:'?')} — ${esc(d.role)}</h3><div class="mut">${d.date} · ₹${d.pkg} LPA · Min CGPA ${d.min} · ${d.depts.join(', ')}</div>
+    <div class="mut">${el.length} eligible · ${aps.length} applied · ${aps.filter(a=>a.st=='Selected').length} selected</div></div><button class="btn del" onclick="delDrive(${d.id})">Delete</button></div>
+    ${aps.length?`<div class="scroll"><table><tr><th>Student</th><th>Dept</th><th>CGPA</th><th>Status</th><th></th></tr>${aps.map(a=>{const s=st(a.s);return s?`<tr><td>${esc(s.name)}</td><td>${s.dept}</td><td>${s.cgpa}</td><td><select onchange="setSt(${a.id},this.value)">${STAT.map(x=>`<option${x==a.st?' selected':''}>${x}</option>`).join('')}</select> <span class="tag ${tc(a.st)}">${a.st}</span></td><td><button class="btn del" onclick="delApp(${a.id})">Remove</button></td></tr>`:''}).join('')}</table></div>`:'<p class="mut">No applicants yet.</p>'}
+    <div class="row add"><select id="ap${d.id}">${free.map(s=>`<option value="${s.id}">${esc(s.name)} (${esc(s.roll)})</option>`).join('')||'<option value="">No eligible students left</option>'}</select><button class="btn" onclick="addApp(${d.id})">Add applicant</button></div></div>`}).join('')}
+function addDrive(){
+  const role=$('#dro').value.trim(),pkg=parseFloat($('#dp').value),min=parseFloat($('#dm').value),date=$('#dd').value,depts=[...document.querySelectorAll('#dx input:checked')].map(i=>i.value);
+  if(!role||!(pkg>=0)||!(min>=0&&min<=10)||!date||!depts.length)return toast('Fill in role, package, date, minimum CGPA and pick a department.');
+  S.drives.push({id:S.n++,c:+$('#dc').value,role,pkg,date,min,depts});save();$('#dro').value='';$('#dp').value='';list();toast('Drive scheduled.')}
+function delDrive(id){S.drives=S.drives.filter(d=>d.id!=id);S.apps=S.apps.filter(a=>a.d!=id);save();list();toast('Drive deleted.')}
+function addApp(id){const v=$('#ap'+id).value;if(!v)return toast('No eligible students left for this drive.');S.apps.push({id:S.n++,d:id,s:+v,st:'Applied'});save();list();toast('Applicant added.')}
+function setSt(id,v){S.apps.find(a=>a.id==id).st=v;save();list();toast('Status set to '+v+'.')}
+function delApp(id){S.apps=S.apps.filter(a=>a.id!=id);save();list()}
+function reset(){S=seed();save();go('dash');toast('Demo data restored.')}
+render();
+</script>
+</body>
+</html>
